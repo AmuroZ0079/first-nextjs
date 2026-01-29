@@ -137,7 +137,7 @@
 2. ตรวจว่า **Service role** และ **Compute role** เป็น **AmplifyFirstNextjsDynamoDBRole**
 3. ถ้ายังไม่ใช่ → กด **Edit** แล้วเลือก role นี้ทั้งสองที่
 
-**ขั้นที่ 3: Redeploy (สำคัญ — ต้องทำหลังลบ key ทุกครั้ง)**
+ท**ขั้นที่ 3: Redeploy (สำคัญ — ต้องทำหลังลบ key ทุกครั้ง)**
 
 1. **Hosting** → เลือก branch **main**
 2. กด **Redeploy this version** (หรือ **Clear cache and redeploy**)
