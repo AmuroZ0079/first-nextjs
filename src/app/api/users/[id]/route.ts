@@ -4,7 +4,7 @@ import {
   UpdateCommand,
   DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { docClient, USERS_TABLE_NAME } from "@/lib/dynamodb";
+import { getDocClient, USERS_TABLE_NAME } from "@/lib/dynamodb";
 
 // GET /api/users/[id] - ดึงข้อมูล user คนเดียว
 export async function GET(
@@ -18,7 +18,7 @@ export async function GET(
   }
 
   try {
-    const { Item } = await docClient.send(
+    const { Item } = await getDocClient().send(
       new GetCommand({
         TableName: USERS_TABLE_NAME,
         Key: { id },
@@ -60,7 +60,7 @@ export async function PUT(
   }
 
   try {
-    const { Attributes } = await docClient.send(
+    const { Attributes } = await getDocClient().send(
       new UpdateCommand({
         TableName: USERS_TABLE_NAME,
         Key: { id },
@@ -102,7 +102,7 @@ export async function DELETE(
   }
 
   try {
-    await docClient.send(
+    await getDocClient().send(
       new DeleteCommand({
         TableName: USERS_TABLE_NAME,
         Key: { id },

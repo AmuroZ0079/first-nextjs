@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { ScanCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { docClient, USERS_TABLE_NAME } from "@/lib/dynamodb";
+import { getDocClient, USERS_TABLE_NAME } from "@/lib/dynamodb";
 
 export type UserItem = {
   id: string;
@@ -12,7 +12,7 @@ export type UserItem = {
 // GET /api/users - ดึงรายการ users ทั้งหมดจาก DynamoDB
 export async function GET() {
   try {
-    const { Items } = await docClient.send(
+    const { Items } = await getDocClient().send(
       new ScanCommand({
         TableName: USERS_TABLE_NAME,
       })
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   const createdAt = new Date().toISOString();
 
   try {
-    await docClient.send(
+    await getDocClient().send(
       new PutCommand({
         TableName: USERS_TABLE_NAME,
         Item: {
