@@ -25,9 +25,14 @@ export default function UsersAdminPage() {
       try {
         const res = await fetch("/api/users");
         const data = await res.json();
-        setUsers(data);
+        if (res.ok && Array.isArray(data)) {
+          setUsers(data);
+        } else {
+          setUsers([]);
+        }
       } catch (error) {
         console.error("โหลด users ผิดพลาด", error);
+        setUsers([]);
       }
     }
     fetchUsers();
@@ -196,7 +201,7 @@ export default function UsersAdminPage() {
             <p>ยังไม่มีผู้ใช้</p>
           ) : (
             <ul style={{ listStyle: "none", padding: 0 }}>
-              {users.map((user) => (
+              {Array.isArray(users) && users.map((user) => (
                 <li
                   key={user.id}
                   style={{

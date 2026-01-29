@@ -17,9 +17,14 @@ export default function UsersClientPage() {
       try {
         const res = await fetch("/api/users");
         const data = await res.json();
-        setUsers(data);
+        if (res.ok && Array.isArray(data)) {
+          setUsers(data);
+        } else {
+          setUsers([]);
+        }
       } catch (error) {
         console.error("โหลด users ผิดพลาด", error);
+        setUsers([]);
       } finally {
         setLoading(false);
       }
@@ -36,7 +41,7 @@ export default function UsersClientPage() {
     <main style={{ padding: 24 }}>
       <h1>รายชื่อผู้ใช้จาก API</h1>
       <ul style={{ marginTop: 16 }}>
-        {users.map((user) => (
+        {Array.isArray(users) && users.map((user) => (
           <li key={user.id} style={{ marginBottom: 8 }}>
             <strong>{user.name}</strong> - {user.email}
           </li>
