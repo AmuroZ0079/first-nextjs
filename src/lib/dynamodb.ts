@@ -1,6 +1,8 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
+const DEFAULT_REGION = "ap-southeast-2";
+
 // อ่าน env ตอนเรียกใช้ (ไม่ใช่ตอนโหลดโมดูล) เพื่อให้ Amplify เห็น env ตอน runtime
 function createClient() {
   const accessKeyId =
@@ -8,14 +10,25 @@ function createClient() {
   const secretAccessKey =
     process.env.DYNAMODB_SECRET_ACCESS_KEY ?? process.env.AWS_SECRET_ACCESS_KEY;
   const region =
-    process.env.DYNAMODB_REGION ?? process.env.AWS_REGION ?? "ap-southeast-2";
+    process.env.DYNAMODB_REGION ?? process.env.AWS_REGION ?? DEFAULT_REGION;
+
+  // มีทั้งคู่และไม่ว่างเท่านั้นถึงส่ง credentials — ไม่ส่ง credentials เลยเมื่อใช้ IAM role (Amplify Compute role)
+  const useExplicitCredentials =
+    typeof accessKeyId === "string" &&
+    accessKeyId.length > 0 &&
+    typeof secretAccessKey === "string" &&
+    secretAccessKey.length > 0;
 
   return new DynamoDBClient({
     region,
-    credentials:
-      accessKeyId && secretAccessKey
-        ? { accessKeyId, secretAccessKey }
-        : undefined,
+    ...(useExplicitCredentials
+      ? {
+          credentials: {
+            accessKeyId: accessKeyId!,
+            secretAccessKey: secretAccessKey!,
+          },
+        }
+      : {}),
   });
 }
 
