@@ -19,14 +19,9 @@ function createClient() {
   });
 }
 
-let _docClient: DynamoDBDocumentClient | null = null;
-
-/** ใช้ฟังก์ชันนี้ใน API routes เพื่อให้อ่าน process.env ตอน runtime (ช่วยกรณี Amplify) */
+/** ใช้ฟังก์ชันนี้ใน API routes — ไม่แคช client เพื่อให้ Amplify ใช้ role credentials ใหม่ทุก request */
 export function getDocClient() {
-  if (!_docClient) {
-    _docClient = DynamoDBDocumentClient.from(createClient());
-  }
-  return _docClient;
+  return DynamoDBDocumentClient.from(createClient());
 }
 
 /** ชื่อ Table DynamoDB ที่สร้างใน AWS (ต้องตรงกับใน Console) */
