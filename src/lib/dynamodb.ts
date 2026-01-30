@@ -19,6 +19,13 @@ function createClient() {
     typeof secretAccessKey === "string" &&
     secretAccessKey.length > 0;
 
+  console.log("[DynamoDB Config]", {
+    region,
+    useExplicitCredentials,
+    hasAccessKeyId: !!accessKeyId,
+    hasSecretKey: !!secretAccessKey,
+  });
+
   return new DynamoDBClient({
     region,
     ...(useExplicitCredentials
