@@ -25,7 +25,18 @@ export async function GET() {
     );
 
     return NextResponse.json(users);
-  } catch (error) {
+  } catch (error: any) {
+    console.error("[API Error]", {
+      message: error?.message,
+      name: error?.name,
+      code: error?.code,
+      hasAWSAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+      hasAWSSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+      hasDynamoAccessKey: !!process.env.DYNAMODB_ACCESS_KEY_ID,
+      hasDynamoSecretKey: !!process.env.DYNAMODB_SECRET_ACCESS_KEY,
+      region: process.env.DYNAMODB_REGION ?? process.env.AWS_REGION,
+      tableName: USERS_TABLE_NAME,
+    });
     return NextResponse.json(
       { error: "ไม่สามารถดึงข้อมูลผู้ใช้ได้", detail: String(error) },
       { status: 500 }
