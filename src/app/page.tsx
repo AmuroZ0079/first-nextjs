@@ -53,6 +53,12 @@ export default function Home() {
             >
               /users-admin
             </Link>
+            <Link
+              href="/upload"
+              className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] sm:w-auto sm:min-w-[140px]"
+            >
+              /upload
+            </Link>
             <a
               href="/api/users"
               target="_blank"
